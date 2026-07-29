@@ -10,6 +10,7 @@ project(
 add_executable(
     TireSim
     src/main.cpp
+    src/Particle1D.cpp
     )
 
 target_compile_features(
