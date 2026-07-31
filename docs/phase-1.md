@@ -49,15 +49,16 @@ I also reviewed the following physics and numerical methods:
 
 At the completion of Phase 1, the project contains the following important files:
 
+``` text
 TireSim/
 ├── CMakeLists.txt
 ├── README.md
 ├── docs/
-    └── Code Tasks/
-        └── Phase 1 Code Tasks.cpp
-    └── CSVs
-        └── Phase 1
-            └── *Generated CSV Files from Phase 1*
+│   └── Code Tasks/
+│       └── Phase 1 Code Tasks.cpp
+│   └── CSVs
+│       └── Phase 1
+│           └── *Generated CSV Files from Phase 1*
 │   └── phase-1.md
 ├── include/
 │   └── tiresim/
@@ -70,6 +71,7 @@ TireSim/
 │   └── CsvWriter.cpp
 ├── output/
 └── tests/
+```
 
 Not every folder must contain completed files yet. This structure provides room for future simulation components and tests.
 
