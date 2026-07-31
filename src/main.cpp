@@ -1,7 +1,9 @@
 #include <iostream>
+#include <cmath>
 
 #include "SimulationState.hpp"
 #include "Particle1D.hpp"
+#include "CsvWriter.hpp"
 
 int main(){
     // ------- Phase 0 Code Task --------
@@ -70,20 +72,164 @@ int main(){
 
     My program results should match my hand-calculated table.
     */
-    int cycles = 20;
-    double timeStep = 0.1; //seconds
-    Particle1D particleA{2.0,0.0,0.0};
-    particleA.setNetForce(10.0);
+    // int cycles = 20;
+    // double timeStep = 0.1; //seconds
+    // Particle1D particleA{2.0,0.0,0.0};
+    // particleA.setNetForce(10.0);
 
-    for(int x=0;x<cycles;++x){
-        particleA.update(timeStep);
-        std::cout << "Timestep: " << x+1 << "\n";
-        std::cout << "Time: " << particleA.state().time << " s\n";
-        std::cout << "Accleration: " << particleA.state().acceleration << " m/s^2\n";
-        std::cout << "Velocity: " << particleA.state().velocity << " m/s\n";
-        std::cout << "Position: " << particleA.state().position << " m\n";
-        std::cout << "\n";
+    // for(int x=0;x<cycles;++x){
+    //     particleA.update(timeStep);
+    //     std::cout << "Timestep: " << x+1 << "\n";
+    //     std::cout << "Time: " << particleA.state().time << " s\n";
+    //     std::cout << "Accleration: " << particleA.state().acceleration << " m/s^2\n";
+    //     std::cout << "Velocity: " << particleA.state().velocity << " m/s\n";
+    //     std::cout << "Position: " << particleA.state().position << " m\n";
+    //     std::cout << "\n";
+    // }
+
+    // ------- Phase 1 - Lesson 5 Code Task ----------
+    /*
+    Create the fixed-timestep loop and print:
+
+    - Time
+    - Position
+    - Velocity
+    - Acceleration
+
+    Compare the final simulated values with the analytical values.
+    */
+
+    // Particle1D partA{2.0,0.0,0.0};
+    // partA.setNetForce(10.0);
+
+    // constexpr double simulationTimeLimit{5.0}; // in Seconds
+    // constexpr double timeStep{0.1};
+
+    // while(partA.state().time + timeStep < simulationTimeLimit){
+    //     partA.update(timeStep);
+
+    //     std::cout << "Time: " << partA.state().time << " s\n";
+    //     std::cout << "Acceleration: " << partA.state().acceleration << " m/s^2\n";
+    //     std::cout << "Velocity: " << partA.state().velocity << " m/s\n";
+    //     std::cout << "Position: " << partA.state().position << " m\n";
+    //     std::cout << "------------------------------\n";
+    // }
+
+    // ------- Phase 1 - Lesson 6 Code Task ----------
+    /*
+    Create a CsvWriter class that is responsible for:
+
+    Opening an output file
+    Detecting file-opening failures
+    Writing column headings
+    Writing one simulation state per row
+
+    The particle should not contain file-writing code.
+
+    Required columns
+    time_s
+    position_m
+    velocity_m_per_s
+    acceleration_m_per_s2
+    My output task
+
+    Write the initial state before the simulation starts.
+
+    Then write every updated state.
+
+    The file should begin like this:
+
+    time_s,position_m,velocity_m_per_s,acceleration_m_per_s2
+    0,0,0,0
+    */
+
+    // ------- Phase 1 - Lesson 7 Code Task ----------
+    /*
+        - Validation Case A — Constant velocity
+        -- Mass: 2 kg
+        -- Initial position: 0 m
+        -- Initial velocity: 10 m/s
+        -- Net force: 0 N
+        -- Duration: 5 s
+
+        -- Before running it, calculate the expected:
+        --- Acceleration
+        --- Final velocity
+        --- Final position
+
+        - Validation Case B — Constant force from rest
+        -- Mass: 2 kg
+        -- Initial position: 0 m
+        -- Initial velocity: 0 m/s
+        -- Net force: 10 N
+        -- Duration: 5 s
+
+        -- Calculate the expected:
+        --- Acceleration
+        --- Final velocity
+        --- Final position
+
+        - Validation Case C — Negative initial velocity
+        -- Mass: 4 kg
+        -- Initial position: 2 m
+        -- Initial velocity: -3 m/s
+        -- Net force: 8 N
+        -- Duration: 4 s
+
+        -- Before running it, determine:
+        --- Acceleration
+        --- Time at which the particle stops moving in the negative direction
+        --- Final velocity
+        --- Final position
+        --- Whether the particle returns to its starting position
+    */
+
+    // ------- Phase 1 - Lesson 8 Code Task ----------
+    /*
+    How does timestep size affect accuracy and computational cost?
+
+    - Use Validation Case B with these timesteps:
+    -- 0.100 s
+    -- 0.050 s
+    -- 0.010 s
+    -- 0.005 s
+    -- 0.001 s
+    */
+
+    constexpr double simulationTimeLimit{20.000}; // in Seconds
+    constexpr double timeStep{0.01}; // in Seconds
+
+    constexpr double coeffDrag{0.5}; // Unitless
+    constexpr double particleArea{0.1}; // m^2
+    constexpr double airPressure{1.225}; //kg per m^3
+    constexpr double forceThrust{10.0}; // N
+    double forceDrag{0.0}; // N
+
+    Particle1D partA{2.0,0.0,0.0};
+    partA.setNetForce(forceThrust);
+
+    CsvWriter writer{{"time_s", "position_m", "velocity_m_per_s", "acceleration_m_per_s2"},"P1L9_NoDrag_Case"};
+
+    writer.writeData({
+        std::to_string(partA.state().time),
+        std::to_string(partA.state().position),
+        std::to_string(partA.state().velocity),
+        std::to_string(partA.state().acceleration)
+    });
+
+    while(partA.state().time + timeStep < simulationTimeLimit)
+    {
+        //forceDrag = -0.5*airPressure*coeffDrag*particleArea*std::abs(partA.state().velocity)*partA.state().velocity;
+        partA.setNetForce(forceThrust+forceDrag);
+        partA.update(timeStep);
+        writer.writeData({
+            std::to_string(partA.state().time),
+            std::to_string(partA.state().position),
+            std::to_string(partA.state().velocity),
+            std::to_string(partA.state().acceleration)
+        });
     }
+    writer.endWrite();
 
     return 0;
 }

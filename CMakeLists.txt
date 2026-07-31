@@ -11,6 +11,7 @@ add_executable(
     TireSim
     src/main.cpp
     src/Particle1D.cpp
+    src/CsvWriter.cpp
     )
 
 target_compile_features(
