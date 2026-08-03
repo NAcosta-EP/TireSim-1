@@ -3,8 +3,8 @@
 #include <stdexcept>
 
 Particle1D::Particle1D(
-    double mass, 
-    double initialPosition, 
+    double mass,
+    double initialPosition,
     double initialVelocity
 )
     : mass_{mass}, netForce_{0.0}, state_{0.0,initialPosition, initialVelocity, 0.0}
@@ -30,4 +30,8 @@ void Particle1D::update(double timeStep){
 
 void Particle1D::setNetForce(double netForce){
     netForce_ = netForce;
+}
+
+void Particle1D::setMass(double mass){
+    mass_ = mass;
 }

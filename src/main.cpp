@@ -3,43 +3,18 @@
 
 #include "SimulationState.hpp"
 #include "Particle1D.hpp"
+#include "Spring1D.hpp"
 #include "CsvWriter.hpp"
 
 int main(){
-    constexpr double simulationTimeLimit{20.000}; // in Seconds
-    constexpr double timeStep{0.01}; // in Seconds
+    Spring1D springA{0.0,2.5,-2.0, 1, 2.0};
+    Spring1D springB{0.0,1.5,2.0};
+    Spring1D springC{0.0,-2.5, 2.0};
+    Spring1D springD{0.0, 0.0, 2.0};
 
-    constexpr double coeffDrag{0.5}; // Unitless
-    constexpr double particleArea{0.1}; // m^2
-    constexpr double airPressure{1.225}; //kg per m^3
-    constexpr double forceThrust{10.0}; // N
-    double forceDrag{0.0}; // N
-
-    Particle1D partA{2.0,0.0,0.0};
-    partA.setNetForce(forceThrust);
-
-    CsvWriter writer{{"time_s", "position_m", "velocity_m_per_s", "acceleration_m_per_s2"},"P1L9_NoDrag_Case"};
-
-    writer.writeData({
-        std::to_string(partA.state().time),
-        std::to_string(partA.state().position),
-        std::to_string(partA.state().velocity),
-        std::to_string(partA.state().acceleration)
-    });
-
-    while(partA.state().time + timeStep < simulationTimeLimit)
-    {
-        //forceDrag = -0.5*airPressure*coeffDrag*particleArea*std::abs(partA.state().velocity)*partA.state().velocity;
-        partA.setNetForce(forceThrust+forceDrag);
-        partA.update(timeStep);
-        writer.writeData({
-            std::to_string(partA.state().time),
-            std::to_string(partA.state().position),
-            std::to_string(partA.state().velocity),
-            std::to_string(partA.state().acceleration)
-        });
-    }
-    writer.endWrite();
-
+    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: 2.5 m, Ext: " << springA.getExtension() <<" m\n";
+    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: 1.5 m, Ext: " << springB.getExtension() <<" m\n";
+    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: -2.5 m, Ext: " << springC.getExtension() <<" m\n";
+    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: 0.0 m, Ext: " << springD.getExtension() <<" m\n";
     return 0;
 }

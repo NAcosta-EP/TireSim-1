@@ -11,9 +11,16 @@ class Particle1D
 
     public:
         Particle1D(double mass, double initialPosition, double initialVelocity);
+        Particle1D(double mass) : Particle1D(mass,0.0,0.0) {}
+
         void setNetForce(double netForce);
+        double getNetForce() const {return netForce_;};
+
         void update(double timeStep);
-        double mass() const {return mass_;};
-        double netForce() const {return netForce_;};
-        SimulationState state() const {return state_;};
+
+        void setMass(double mass);
+        double getMass() const {return mass_;};
+
+
+        const SimulationState& state() const {return state_;};
 };

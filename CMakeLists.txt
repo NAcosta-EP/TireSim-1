@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 
 project(
     TireSim
-    VERSION 0.1.0
+    VERSION 0.1.5
     DESCRIPTION "Real-time soft-body tire like simulation C++ Project"
     LANGUAGES CXX
     )
@@ -11,6 +11,7 @@ add_executable(
     TireSim
     src/main.cpp
     src/Particle1D.cpp
+    src/Spring1D.cpp
     src/CsvWriter.cpp
     )
 
