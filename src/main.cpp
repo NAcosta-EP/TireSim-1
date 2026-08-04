@@ -7,18 +7,41 @@
 #include "CsvWriter.hpp"
 
 int main(){
-    Spring1D springA{0.0, 2.2, 2.0, 100};
-    Spring1D springB{0.0, 1.8, 2.0, 100};
-    Spring1D springC{0.0, -2.2, 2.0, 100};
-    Spring1D springD{0.0, -1.8, 2.0, 100};
 
-    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: "<< springA.getParticlePosition() <<" m, Ext: " <<
-        springA.getExtension() <<" m, "<< springA.getSpringForce() << "N\n";
-    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: "<< springB.getParticlePosition() <<" m, Ext: " <<
-        springB.getExtension() <<" m, "<< springB.getSpringForce() << "N\n";
-    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: "<< springC.getParticlePosition() <<" m, Ext: " <<
-        springC.getExtension() <<" m, "<< springC.getSpringForce() << "N\n";
-    std::cout << "Rest Length: 2.0 m, Anchor: 0.0 m, Particle: "<< springD.getParticlePosition() <<" m, Ext: " <<
-        springD.getExtension() <<" m, "<< springD.getSpringForce() << "N\n";
+    std::vector<std::string> const columnHeaders{"time", "position","velocity","acceleration","spring_extension","spring_force"};
+    CsvWriter writer{columnHeaders,"Spring Test"};
+    Particle1D partA{1.0, 1.0, 0.0};
+    Spring1D springA{0.0, partA.state().position, 0.0, 100};
+
+    double const timeStep{0.0001};
+    double const finalTime{2.0};
+
+    writer.writeData({
+        std::to_string(partA.state().time),
+        std::to_string(partA.state().position),
+        std::to_string(partA.state().velocity),
+        std::to_string(partA.state().acceleration),
+        std::to_string(springA.getExtension()),
+        std::to_string(springA.getSpringForce())
+    });
+
+    while (partA.state().time < finalTime)
+    {
+        springA.setParticlePos(partA.state().position);
+        partA.setNetForce(springA.getSpringForce());
+        partA.update(timeStep);
+
+
+        writer.writeData({
+            std::to_string(partA.state().time),
+            std::to_string(partA.state().position),
+            std::to_string(partA.state().velocity),
+            std::to_string(partA.state().acceleration),
+            std::to_string(springA.getExtension()),
+            std::to_string(springA.getSpringForce())
+        });
+    }
+
+    writer.endWrite();
     return 0;
 }
