@@ -16,6 +16,14 @@ class Spring1D{
         double forceTotal_{0.0};
 
     public:
+        /**
+         * @brief 1D Spring Physics Object
+         * @param anchorPos Anchor Position of Spring [Meters]
+         * @param particle Particle at end of spring <- Pass in Particle address.
+         * @param restLength Resting length of the spring, must be 0 or greater. [Meters]
+         * @param stiffness  Spring stiffness, must be greater than 0. [Newton/Meter]
+         * @param coeffDamping Spring damping coefficent, must be 0 or greater. [Unitless]
+        */
         Spring1D(double anchorPos, Particle1D *particle, double restLength, double stiffness, double coeffDamping);
         Spring1D(double anchorPos, Particle1D *particle, double restLength, double stiffness) : Spring1D(anchorPos, particle, restLength, stiffness, 0.0) {}
         Spring1D(double anchorPos, Particle1D *particle, double restLength) : Spring1D(anchorPos, particle, restLength, 1.0, 0.0) {}

@@ -3,7 +3,7 @@
 /**
  * @brief 1D Spring Physics Object
  * @param anchorPos Anchor Position of Spring [Meters]
- * @param particle Particle at end of spring <- Pass in Particle pointer
+ * @param particle Particle at end of spring <- Pass in Particle address.
  * @param restLength Resting length of the spring, must be 0 or greater. [Meters]
  * @param stiffness  Spring stiffness, must be greater than 0. [Newton/Meter]
  * @param coeffDamping Spring damping coefficent, must be 0 or greater. [Unitless]
@@ -62,5 +62,10 @@ double Spring1D::getSpringForce(){
 }
 
 double Spring1D::getDampingForce(){
-    return 0.0;
+    forceDamping_ = -coeffDamping_*particle_->state().velocity;
+    return forceDamping_;
+}
+
+double Spring1D::getTotalForce(){
+    return forceTotal_ = getSpringForce() + getDampingForce();
 }
