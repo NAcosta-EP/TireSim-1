@@ -9,9 +9,9 @@
 int main(){
 
     std::vector<std::string> const columnHeaders{"time", "position","velocity","acceleration","spring_extension","spring_force"};
-    CsvWriter writer{columnHeaders,"Spring Test"};
+    CsvWriter writer{columnHeaders,"Spring Test PTR"};
     Particle1D partA{1.0, 1.0, 0.0};
-    Spring1D springA{0.0, partA.state().position, 0.0, 100};
+    Spring1D springA{0.0, &partA, 0.0, 100};
 
     double const timeStep{0.0001};
     double const finalTime{2.0};
@@ -27,7 +27,6 @@ int main(){
 
     while (partA.state().time < finalTime)
     {
-        springA.setParticlePos(partA.state().position);
         partA.setNetForce(springA.getSpringForce());
         partA.update(timeStep);
 
