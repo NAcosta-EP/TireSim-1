@@ -37,6 +37,17 @@ void Spring1D::setDampingCoeff(double coeffDamping){
 
 double Spring1D::getExtension(){
     //Length_ext - Length_rest
-    extension_ = (particlePos_ - anchorPos_) - restLength_;
+    extension_ = abs(particlePos_ - anchorPos_) - restLength_;
     return extension_;
+}
+
+double Spring1D::getSpringForce(){
+    // Hooke's Law F = -k*del_L*directionCoeff
+    int dir = 1;
+
+    if(particlePos_ < anchorPos_){
+        dir = -dir;
+    }
+    force_ = -stiffness_*extension_*dir;
+    return force_;
 }
