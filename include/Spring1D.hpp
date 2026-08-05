@@ -5,15 +5,23 @@
 
 class Spring1D{
     private:
+        //Spring Material Properties
         double stiffness_{1.0};
         double restLength_{1.0};
         double coeffDamping_{0.0};
-        double anchorPos_{0.0};
-        Particle1D *particle_;
+
+        //Spring Spatial Properties
+        Particle1D *particleA_;
+        Particle1D *particleB_;
         double extension_{0.0};
+
+        //Spring Force Properties
         double forceSpring_{0.0};
         double forceDamping_{0.0};
         double forceTotal_{0.0};
+
+        //Spring Energy Properties
+        double springEnergy_{0.0};
 
     public:
         /**
@@ -24,9 +32,9 @@ class Spring1D{
          * @param stiffness  Spring stiffness, must be greater than 0. [Newton/Meter]
          * @param coeffDamping Spring damping coefficent, must be 0 or greater. [Unitless]
         */
-        Spring1D(double anchorPos, Particle1D *particle, double restLength, double stiffness, double coeffDamping);
-        Spring1D(double anchorPos, Particle1D *particle, double restLength, double stiffness) : Spring1D(anchorPos, particle, restLength, stiffness, 0.0) {}
-        Spring1D(double anchorPos, Particle1D *particle, double restLength) : Spring1D(anchorPos, particle, restLength, 1.0, 0.0) {}
+        Spring1D(Particle1D *particleA, Particle1D *particleB, double restLength, double stiffness, double coeffDamping);
+        Spring1D(Particle1D *particleA, Particle1D *particleB, double restLength, double stiffness) : Spring1D(particleA, particleB, restLength, stiffness, 0.0) {}
+        Spring1D(Particle1D *particleA, Particle1D *particleB, double restLength) : Spring1D(particleA, particleB, restLength, 1.0, 0.0) {}
 
         double getStiffness(){return stiffness_;};
         void setStiffness(double stiffness);
@@ -36,9 +44,6 @@ class Spring1D{
 
         double getDampingCoeff(){return coeffDamping_;};
         void setDampingCoeff(double dampingCoeff);
-
-        double getAnchorPosition(){return anchorPos_;};
-        void setAnchorPos(double anchorPos);
 
         double getExtension();
         void setExtension(double extentionLength);
@@ -51,4 +56,7 @@ class Spring1D{
 
         double getTotalForce();
         void setTotalForce(double force);
+
+        double getSpringEnergy();
+        void setSpringEnergy(double energy);
 };

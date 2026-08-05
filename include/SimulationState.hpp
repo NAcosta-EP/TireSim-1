@@ -5,4 +5,5 @@ struct SimulationState{
     double position{};
     double velocity{};
     double acceleration{};
+    double kineticEnergy{};
 };

@@ -25,6 +25,7 @@ void Particle1D::update(double timeStep){
     state_.acceleration = netForce_/mass_;
     state_.velocity = state_.velocity + state_.acceleration*timeStep;
     state_.position = state_.position + state_.velocity*timeStep;
+    state_.kineticEnergy = 0.5*mass_*state_.velocity*state_.velocity;
     state_.time = state_.time + timeStep;
 }
 

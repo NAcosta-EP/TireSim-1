@@ -8,12 +8,12 @@
  * @param stiffness  Spring stiffness, must be greater than 0. [Newton/Meter]
  * @param coeffDamping Spring damping coefficent, must be 0 or greater. [Unitless]
 */
-Spring1D::Spring1D(double anchorPos, Particle1D *particle, double restLength, double stiffness, double coeffDamping)
-    : anchorPos_{anchorPos}, particle_{particle}
+Spring1D::Spring1D(Particle1D *particleA, Particle1D *particleB, double restLength, double stiffness, double coeffDamping)
+    : particleA_{particleA}, particleB_{particleB}
 {
 
-    if(particle == NULL){
-        particle_ = new Particle1D{1.0};
+    if(particleA == NULL){
+        particleA_ = new Particle1D{1.0,0.0,0.0};
     }
 
     setRestLength(restLength);
@@ -45,7 +45,7 @@ void Spring1D::setDampingCoeff(double coeffDamping){
 
 double Spring1D::getExtension(){
     //Length_ext - Length_rest
-    extension_ = abs(particle_->state().position - anchorPos_) - restLength_;
+    extension_ = abs(particleB_->state().position - particleA_->state().position) - restLength_;
     return extension_;
 }
 
@@ -53,7 +53,7 @@ double Spring1D::getSpringForce(){
     // Hooke's Law F = -k*del_L*directionCoeff
     int dir = 1;
 
-    if(particle_->state().position < anchorPos_){
+    if(particleB_->state().position < particleA_->state().position){
         dir = -dir;
     }
 
@@ -62,10 +62,14 @@ double Spring1D::getSpringForce(){
 }
 
 double Spring1D::getDampingForce(){
-    forceDamping_ = -coeffDamping_*particle_->state().velocity;
+    forceDamping_ = -coeffDamping_*(abs(particleA_->state().velocity) + abs(particleB_->state().velocity));
     return forceDamping_;
 }
 
 double Spring1D::getTotalForce(){
     return forceTotal_ = getSpringForce() + getDampingForce();
+}
+
+double Spring1D::getSpringEnergy(){
+    return springEnergy_ = 0.5*stiffness_*extension_*extension_;
 }
