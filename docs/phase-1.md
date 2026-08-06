@@ -69,11 +69,8 @@ TireSim/
 │   ├── main.cpp
 │   ├── Particle1D.cpp
 │   └── CsvWriter.cpp
-├── output/
 └── tests/
 ```
-
-Not every folder must contain completed files yet. This structure provides room for future simulation components and tests.
 
 ## 4. Software Design
 

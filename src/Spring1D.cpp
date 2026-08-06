@@ -13,7 +13,7 @@ Spring1D::Spring1D(Particle1D *particleA, Particle1D *particleB, double restLeng
 {
 
     if(particleA == NULL){
-        particleA_ = new Particle1D{1.0,0.0,0.0};
+        particleA_ = new Particle1D{1.0,false,0.0,0.0};
     }
 
     setRestLength(restLength);

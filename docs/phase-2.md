@@ -21,8 +21,6 @@ TireSim/
 ├── CMakeLists.txt
 ├── README.md
 ├── docs/
-│   └── Code Tasks/
-│       └── Phase 1 Code Tasks.cpp
 │   └── CSVs
 │       └── Phase 1
 │           └── *Generated CSV Files from Phase 1*
@@ -43,8 +41,6 @@ TireSim/
 │   └── CsvWriter.cpp
 └── tests/
 ```
-
-Not every folder must contain completed files yet. This structure provides room for future simulation components and tests.
 
 ## 4. Software Design
 

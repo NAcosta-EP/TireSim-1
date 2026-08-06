@@ -9,13 +9,13 @@
 int main(){
 
     std::vector<std::string> const columnHeaders{"time-A", "position-A","velocity-A","acceleration-A","force-A","time-B", "position-B","velocity-B","acceleration-B","force-B","spring_extension","spring_force","damping_force","spring_total_force", "kinetic_energy-A", "kinetic_energy-B", "spring_energy", "total_energy"};
-    CsvWriter writer{columnHeaders,"Spring Test - TwoPart - 10C"};
-    Particle1D partA{1.0, 0.0, 0.0};
-    Particle1D partB{1.0, 1.0, 0.0};
-    Spring1D springA{&partB, &partA, 0.0, 100, 10.0};
+    CsvWriter writer{columnHeaders,"Spring Test - TwoPart - 0C - FixedAB - Release A - 1s"};
+    Particle1D partA{1.0, true, 0.0, 0.0};
+    Particle1D partB{1.0, true, 1.0, 0.0};
+    Spring1D springA{&partB, &partA, 0.0, 100, 0.0};
 
-    double const timeStep{0.0001};
-    double const finalTime{2.0};
+    double constexpr timeStep{0.0001};
+    double constexpr finalTime{2.0};
 
     writer.writeData({
         std::to_string(partA.state().time),
@@ -40,6 +40,9 @@ int main(){
 
     while (partA.state().time < finalTime)
     {
+        if(partA.state().time > 1.0 && partA.isFixed()){
+            partA.setFixed(false);
+        }
         partA.setNetForce(springA.getTotalForce());
         partB.setNetForce(-springA.getTotalForce());
         partA.update(timeStep);
